@@ -22,42 +22,43 @@ public class MainViewController implements Initializable {
 
 	@FXML
 	private MenuItem menuItemSeller;
-
+	
 	@FXML
 	private MenuItem menuItemDepartment;
-
+	
 	@FXML
 	private MenuItem menuItemAbout;
 
+	@FXML
 	public void onMenuItemSellerAction() {
 		System.out.println("onMenuItemSellerAction");
 	}
 
+	@FXML
 	public void onMenuItemDepartmentAction() {
 		loadView("/gui/DepartmentList.fxml", (DepartmentListController controller) -> {
 			controller.setDepartmentService(new DepartmentService());
 			controller.updateTableView();
 		});
 	}
-
+	
+	@FXML
 	public void onMenuItemAboutAction() {
 		loadView("/gui/About.fxml", x -> {});
 	}
-
+	
 	@Override
 	public void initialize(URL uri, ResourceBundle rb) {
-		
 	}
-
-	// Give the security about open other window.
+	
 	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			VBox newVBox = loader.load();
-
+			
 			Scene mainScene = Main.getMainScene();
 			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
-
+			
 			Node mainMenu = mainVBox.getChildren().get(0);
 			mainVBox.getChildren().clear();
 			mainVBox.getChildren().add(mainMenu);
@@ -65,10 +66,9 @@ public class MainViewController implements Initializable {
 			
 			T controller = loader.getController();
 			initializingAction.accept(controller);
-			
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
-	}
-
+	}	
 }

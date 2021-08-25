@@ -28,7 +28,7 @@ import model.entities.Department;
 import model.services.DepartmentService;
 
 public class DepartmentListController implements Initializable, DataChangeListener {
-	
+
 	private DepartmentService service;
 	
 	@FXML
@@ -51,25 +51,24 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		Department obj = new Department();
 		createDialogForm(obj, "/gui/DepartmentForm.fxml", parentStage);
 	}
-	// Dependency Injection
+	
 	public void setDepartmentService(DepartmentService service) {
 		this.service = service;
 	}
 	
 	@Override
-	public void initialize(URL uri, ResourceBundle rb) {
-		initialize();
+	public void initialize(URL url, ResourceBundle rb) {
+		initializeNodes();
 	}
 
-	private void initialize() {
+	private void initializeNodes() {
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
-		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewDepartment.prefHeightProperty().bind(stage.heightProperty());
 	}
 	
-	// Protect of possible forgetfulness about dependency injection
 	public void updateTableView() {
 		if (service == null) {
 			throw new IllegalStateException("Service was null");
@@ -78,7 +77,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 		obsList = FXCollections.observableArrayList(list);
 		tableViewDepartment.setItems(obsList);
 	}
-
+	
 	private void createDialogForm(Department obj, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
@@ -98,10 +97,11 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
 		}
-		catch(IOException e) {
+		catch (IOException e) {
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
+
 	@Override
 	public void onDataChanged() {
 		updateTableView();
