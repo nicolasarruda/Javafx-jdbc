@@ -31,6 +31,5 @@ nbbuild/
 dist/
 nbdist/
 
-
 # Eclipse
 .settings/
